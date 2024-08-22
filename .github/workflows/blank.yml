@@ -51,11 +51,3 @@ jobs:
         with:
           branch: ${{ steps.comment-branch.outputs.head_ref }}
 
-
-  update-pr-title:
-    needs: extract_ab
-    runs-on: ubuntu-latest
-    steps:
-      - name: Push changes
-        run: echo "PR Description:${{ github.event.pull_request.body }}"
-
