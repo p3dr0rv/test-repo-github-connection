@@ -39,7 +39,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit --allow-empty -m -a  "Fixed AB#$TEST"
+          git commit --allow-empty -m "Fixed AB#$TEST"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
