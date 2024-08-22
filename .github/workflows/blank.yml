@@ -27,11 +27,21 @@ jobs:
           text: ${{ github.event.comment.body }}
           regex: '(?<=#)\d+'
 
+
+      - name: Set env var
+        run: |
+          result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
+          echo "TEST=${result}" >> $GITHUB_ENV
+
+          
+
       - name: Echo extracted title
         run: |
-          echo "${{ steps.get-pr-comment.outputs.group1 }}"
+          echo "${{TEST}}"
 
       - name: Commit report
         run: |
+          git config --global user.name "p3dr0rv"
+          git config --global user.email "pedroro@microsoft.com"
           git commit --allow-empty -m  "Fixed AD#${{ steps.get-pr-comment.outputs.group1 }}"
           git push
