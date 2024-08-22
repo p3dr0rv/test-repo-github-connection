@@ -57,10 +57,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: gr2m/create-or-update-pull-request-action@v1
-        with:
-          title: "My pull request title"
-
+        run: echo "PR Description:${{ github.event.pull_request.body }}"
 
