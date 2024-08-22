@@ -50,3 +50,30 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           branch: ${{ steps.comment-branch.outputs.head_ref }}
+
+
+  update-pr-title:
+    needs: extract_ab
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update PR title
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data: pullRequest } = await github.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number,
+          });
+          
+          const newTitle = `${currentTitle} ${ABID}`;
+
+          await github.pulls.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number,
+            title: newTitle,
+          });
+          console.log(`PR title updated to: ${newTitle}`);
+
+
