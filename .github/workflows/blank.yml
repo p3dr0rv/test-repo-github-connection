@@ -60,20 +60,11 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const { data: pullRequest } = await github.pulls.get({
+          const { data: pullRequest } = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: context.payload.pull_request.number,
           });
           
-          const newTitle = `${currentTitle} ${ABID}`;
-
-          await github.pulls.update({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.payload.pull_request.number,
-            title: newTitle,
-          });
-          console.log(`PR title updated to: ${newTitle}`);
 
 
