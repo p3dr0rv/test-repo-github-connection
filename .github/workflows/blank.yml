@@ -20,13 +20,6 @@ jobs:
         with:
           ref: ${{ steps.comment-branch.outputs.head_ref }}
           
-      - name: Get PR comment
-        uses: actions-ecosystem/action-regex-match@v2
-        id: get-pr-comment
-        with:
-          text: ${{ github.event.comment.body }}
-          regex: '(?<=#)\d+'
-
 
       - name: Set env var
         run: |
@@ -39,9 +32,9 @@ jobs:
         run: |
           echo "${{TEST}}"
 
-      - name: Commit report
-        run: |
-          git config --global user.name "p3dr0rv"
-          git config --global user.email "pedroro@microsoft.com"
-          git commit --allow-empty -m  "Fixed AD#${{ steps.get-pr-comment.outputs.group1 }}"
-          git push
+#      - name: Commit report
+#        run: |
+#          git config --global user.name "p3dr0rv"
+#          git config --global user.email "pedroro@microsoft.com"
+#          git commit --allow-empty -m  "Fixed AD#${{ steps.get-pr-comment.outputs.group1 }}"
+#          git push
