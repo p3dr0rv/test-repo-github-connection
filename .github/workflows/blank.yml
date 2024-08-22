@@ -24,10 +24,10 @@ jobs:
       - name: Set enviroment variable with AB ID
         run: |
           result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
-          echo "AB_ID=${result}" >> $GITHUB_ENV
+          echo "ABID=${result}" >> $GITHUB_ENV
       - name: Print result
         run: |
-          echo "$AB_ID"
+          echo "$ABID"
   # Extracts the pull request number
       - name: Extract pull request number
         id: pr
@@ -36,7 +36,7 @@ jobs:
       - name: Generate new PR title
         id: new-title
         run: |
-          NEW_TITLE="Fixes AB#$AB_ID"
+          NEW_TITLE="Fixes AB#$ABID"
           echo "NEW_TITLE=${NEW_TITLE}" >> $GITHUB_ENV
 
       - name: Get the current PR title
@@ -50,12 +50,12 @@ jobs:
             | jq -r .title)
           echo "CURRENT_PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
 
-      - name: Print result
+      - name: Print envs
         run: |
-          echo "$AB_ID"
+          echo "$ABID"
           echo "$PR_TITLE"
           echo "$PR_NUMBER"
-          echo "$NEW_TITLE"
+          echo "$CURRENT_PR_TITLE"
             
   # Retrieves the branch name associated with the pull request
   # Then checks out the PR branch to make a commits and push it
