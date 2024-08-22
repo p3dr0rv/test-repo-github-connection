@@ -56,15 +56,9 @@ jobs:
     needs: extract_ab
     runs-on: ubuntu-latest
     steps:
-    - name: Update PR title
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const { data: pullRequest } = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: github.event.issue.pull_request.number,
-          });
-          
+      - name: Push changes
+        uses: gr2m/create-or-update-pull-request-action@v1
+        with:
+          title: "My pull request title"
 
 
