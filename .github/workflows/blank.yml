@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  is_pr_ready_valid:
+  is_pr_comment_valid:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200')
     steps:
@@ -17,7 +17,7 @@ jobs:
           echo "PR ready"
 
   extract_ab:
-    needs: is_pr_ready_valid
+    needs: is_pr_comment_valid
     runs-on: ubuntu-latest
     steps:
       - name: Set enviroment variable with AB ID
