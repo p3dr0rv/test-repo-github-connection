@@ -30,7 +30,7 @@ jobs:
 
       - name: Echo extracted title
         run: |
-          echo "${{TEST}}"
+          echo "$TEST"
 
 #      - name: Commit report
 #        run: |
