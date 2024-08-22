@@ -1,45 +1,50 @@
 # This is a basic workflow to help you get started with Actions
 #saw
-name: "Deploy on Comment"
+name: "Commit Fix ADB#ID"
 
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  deploy:
+
+  is_pr_ready_valid:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200')
+    steps:
+      - name: Check if comment with approval has been generated 
+        run: | 
+          echo "PR ready"
+
+  extract_ab:
+    needs: is_pr_ready_valid
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set enviroment variable with AB ID
+        run: |
+          result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
+          echo "ABID=${result}" >> $GITHUB_ENV
+      - name: Print result
+        run: |
+          echo "$ABID"
+
+  commit_and_push:
+    needs: extract_ab
+    runs-on: ubuntu-latest
     steps:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-
-
-
-      - name: Set env var
-        run: |
-          result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
-          echo "TEST=${result}" >> $GITHUB_ENV
-
-          
-
-      - name: Echo extracted title
-        run: |
-          echo "$TEST"
-
-
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.comment-branch.outputs.head_ref }}
           fetch-depth: 0
-
-      - name: Commit report
+      - name: Commit tag
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit --allow-empty -m "Fixed AB#$TEST"
+          git commit --allow-empty -m "Fixed AB#$ABID"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
