@@ -11,6 +11,10 @@ on:
   issue_comment:
     types: [created]
 
+# Global variable to hold the AB ID 
+env:
+  ABID: ""
+
 jobs:
   # Checks if the comment is on a pull request and contains the string 'lcc-200'
   is_pr_comment_valid:
