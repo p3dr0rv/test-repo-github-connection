@@ -15,11 +15,7 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
 
-      - name: Checkout PR branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
-          
+
 
       - name: Set env var
         run: |
@@ -32,9 +28,19 @@ jobs:
         run: |
           echo "$TEST"
 
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          fetch-depth: 0
+
       - name: Commit report
         run: |
-          git config --global user.name "p3dr0rv"
-          git config --global user.email "pedroro@microsoft.com"
-          git commit --allow-empty -m  "Fixed AB#$TEST"
-          git push
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit --allow-empty -m -a  "Fixed AB#$TEST"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ steps.comment-branch.outputs.head_ref }}
