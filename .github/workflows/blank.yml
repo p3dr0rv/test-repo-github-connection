@@ -11,13 +11,9 @@ on:
   issue_comment:
     types: [created]
 
-# Global variable to hold the AB ID 
-env:
-  ABID: ""
-
 jobs:
+  commit_push_AB_ID:
   # Checks if the comment is on a pull request and contains the string 'lcc-200'
-  is_pr_comment_valid:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200')
     steps:
@@ -25,10 +21,6 @@ jobs:
         run: | 
           echo "PR ready"
   # Extracts the AB ID from the comment body using regex and sets it as an environment variable
-  extract_ab:
-    needs: is_pr_comment_valid
-    runs-on: ubuntu-latest
-    steps:
       - name: Set enviroment variable with AB ID
         run: |
           result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
@@ -38,10 +30,6 @@ jobs:
           echo "$ABID"
   # Retrieves the branch name associated with the pull request
   # Then checks out the PR branch to make a commits and push it
-  commit_and_push:
-    needs: extract_ab
-    runs-on: ubuntu-latest
-    steps:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
