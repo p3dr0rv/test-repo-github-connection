@@ -32,9 +32,9 @@ jobs:
         run: |
           echo "$TEST"
 
-#      - name: Commit report
-#        run: |
-#          git config --global user.name "p3dr0rv"
-#          git config --global user.email "pedroro@microsoft.com"
-#          git commit --allow-empty -m  "Fixed AD#${{ steps.get-pr-comment.outputs.group1 }}"
-#          git push
+      - name: Commit report
+        run: |
+          git config --global user.name "p3dr0rv"
+          git config --global user.email "pedroro@microsoft.com"
+          git commit --allow-empty -m  "Fixed AB#$TEST"
+          git push
