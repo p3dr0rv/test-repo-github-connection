@@ -1,12 +1,18 @@
-# This is a basic workflow to help you get started with Actions
-name: "Commit Fix ADB#ID"
+# This workflow detects if the AB validation check has succeeded. 
+# If a success message has been posted, the workflow will extract the AB ID from the message and create an empty commit with the next message Fixed AB#ID.
+# This action will mark the PR to automatically resolve the associated ADO item when the PR is completed.
+# For more details about the AB validation, see: https://github.com/marketplace/actions/azure-boards-check-for-ab
 
+# if the message has been posted the action will ex
+name: "Commit message 'Fix AB#ID' on branch"
+
+# Triggers the workflow when a new issue comment is created
 on:
   issue_comment:
     types: [created]
 
 jobs:
-
+  # Checks if the comment is on a pull request and contains the string 'lcc-200'
   is_pr_comment_valid:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200')
@@ -14,7 +20,7 @@ jobs:
       - name: Check if comment with approval has been generated 
         run: | 
           echo "PR ready"
-
+  # Extracts the AB ID from the comment body using regex and sets it as an environment variable
   extract_ab:
     needs: is_pr_comment_valid
     runs-on: ubuntu-latest
@@ -26,7 +32,8 @@ jobs:
       - name: Print result
         run: |
           echo "$ABID"
-
+  # Retrieves the branch name associated with the pull request
+  # Then checks out the PR branch to make a commits and push it
   commit_and_push:
     needs: extract_ab
     runs-on: ubuntu-latest
