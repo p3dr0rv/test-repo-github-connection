@@ -46,12 +46,11 @@ jobs:
       - name: Check if PR title contains fix keyword with AB# using grep
         run: |
           if echo "${{ env.CURRENT_PR_TITLE }}" | grep -i -q '\bfix\(ed\|es\)\? AB#[0-9]'; then
-            echo "Pattern found in PR title!"
+            echo "Pattern found in PR title!, no need to update."
+            exit 0
           else
             echo "Pattern not found in PR title!"
-            exit 1  # Optionally fail the step if the pattern is not found
           fi
-          
     # Generate new PR title
       - name: Generate new PR title
         id: new-title
