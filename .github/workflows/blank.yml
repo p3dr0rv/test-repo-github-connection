@@ -48,7 +48,7 @@ jobs:
 
       - name: Check if the variable contains the pattern
         run: |
-          if [[ "${CURRENT_PR_TITLE}" =~ (?i)\bfix(?:ed|es)?\ AB#\d+\b ]]; then
+          if [[ "${{ env.CURRENT_PR_TITLE }}" =~ (?i)\bfix(?:ed|es)?\ AB#\d+\b ]]; then
             echo "Pattern found!"
           else
             echo "Pattern not found!"
