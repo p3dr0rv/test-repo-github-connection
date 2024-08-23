@@ -15,7 +15,9 @@ jobs:
   commit_push_AB_ID:
   # Checks if the comment is on a pull request and contains the string 'lcc-200'
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200')
+    if: |
+      github.event.issue.pull_request && contains(github.event.comment.body, 'lcc-200') &&
+      !contains(github.event.issue.labels.*.name, 'skip AB ID validation')
     steps:
       - name: Check if comment with approval has been generated 
         run: | 
