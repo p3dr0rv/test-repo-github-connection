@@ -43,22 +43,13 @@ jobs:
             | jq -r .title)
           echo "CURRENT_PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
 
-
-      - name: Check if PR title contains fix keyword with AB#
+      - name: Check if PR title contains fix keyword with AB# using grep
         run: |
-          if [[ "${{ env.CURRENT_PR_TITLE }}" =~ (?i)\bfix(?:ed|es)?\ AB#\d+\b ]]; then
+          if echo "${{ env.CURRENT_PR_TITLE }}" | grep -i -q '\bfix\(ed\|es\)\? AB#\d\+'; then
             echo "Pattern found in PR title!"
           else
             echo "Pattern not found in PR title!"
             exit 1  # Optionally fail the step if the pattern is not found
-          fi
-
-      - name: Check if the variable contains the pattern
-        run: |
-          if [[ "${{ env.CURRENT_PR_TITLE }}" =~ (?i)\bfix(?:ed|es)?\ AB#\d+\b ]]; then
-            echo "Pattern found!"
-          else
-            echo "Pattern not found!"
           fi
 
 
