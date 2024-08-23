@@ -1,10 +1,10 @@
 # This workflow detects if the AB validation check has succeeded. 
-# If a success message has been posted, the workflow will extract the AB ID from the message and create an empty commit with the next message Fixed AB#ID.
+# If a success message has been posted, the workflow will extract the AB ID from the message and update the PR title adding ',Fixed AB#ID' at the end.
 # This action will mark the PR to automatically resolve the associated ADO item when the PR is completed.
 # For more details about the AB validation, see: https://github.com/marketplace/actions/azure-boards-check-for-ab
 
 # if the message has been posted the action will ex
-name: "Commit message 'Fix AB#ID' on branch"
+name: "Append 'Fix AB#ID' to PR title"
 
 # Triggers the workflow when a new issue comment is created
 on:
