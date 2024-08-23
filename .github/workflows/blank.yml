@@ -47,14 +47,23 @@ jobs:
           NEW_TITLE="$CURRENT_PR_TITLE, Fixes AB#$AB_ID"
           echo "NEW_TITLE=${NEW_TITLE}" >> $GITHUB_ENV
     # check point 
-      - name: Print envs
+      - name: Print env.vars (check point)
         run: |
           echo "Check env.vars"
           echo "$AB_ID"
-          echo "$PR_TITLE"
           echo "$PR_NUMBER"
           echo "$CURRENT_PR_TITLE"
           echo "$NEW_TITLE"
+    # Update new title
+      - name: Update the pull request title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X PATCH \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ env.PR_NUMBER }} \
+            -d '{"title":"'"${{ env.NEW_TITLE }}"'"}'
             
   # Retrieves the branch name associated with the pull request
   # Then checks out the PR branch to make a commits and push it
