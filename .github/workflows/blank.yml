@@ -42,6 +42,20 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/pulls/${{ env.PR_NUMBER }} \
             | jq -r .title)
           echo "CURRENT_PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+
+
+
+
+      - name: Check if the variable contains the pattern
+        run: |
+          if [[ "$CURRENT_PR_TITLE" =~ \bfix(?:ed|es)?\ AB#\d+\b ]]; then
+            echo "Pattern found!"
+          else
+            echo "Pattern not found!"
+          fi
+
+
+          
     # Generate new PR title
       - name: Generate new PR title
         id: new-title
