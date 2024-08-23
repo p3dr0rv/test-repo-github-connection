@@ -24,10 +24,10 @@ jobs:
       - name: Set enviroment variable with AB ID
         run: |
           result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
-          echo "ABID=${result}" >> $GITHUB_ENV
+          echo "AB_ID=${result}" >> $GITHUB_ENV
       - name: Print result
         run: |
-          echo "$ABID"
+          echo "$AB_ID"
   # Extracts the pull request number
       - name: Extract pull request number
         id: pr
@@ -36,7 +36,7 @@ jobs:
       - name: Generate new PR title
         id: new-title
         run: |
-          NEW_TITLE="Fixes AB#$ABID"
+          NEW_TITLE="Fixes AB#$AB_ID"
           echo "NEW_TITLE=${NEW_TITLE}" >> $GITHUB_ENV
 
       - name: Get the current PR title
@@ -52,7 +52,7 @@ jobs:
 
       - name: Print envs
         run: |
-          echo "$ABID"
+          echo "$AB_ID"
           echo "$PR_TITLE"
           echo "$PR_NUMBER"
           echo "$CURRENT_PR_TITLE"
