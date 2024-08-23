@@ -44,15 +44,18 @@ jobs:
           echo "CURRENT_PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
 
       - name: Check if PR title contains fix keyword with AB# using grep
+        id: check
         run: |
           if echo "${{ env.CURRENT_PR_TITLE }}" | grep -i -q '\bfix\(ed\|es\)\? AB#[0-9]'; then
             echo "Pattern found in PR title!, no need to update."
-            exit 0
+            echo "add_ab_id=false" >> $GITHUB_OUTPUT
           else
             echo "Pattern not found in PR title!"
+            echo "add_ab_id=true" >> $GITHUB_OUTPUT
           fi
     # Generate new PR title
       - name: Generate new PR title
+        if: steps.check.outputs.add_ab_id == 'true'
         id: new-title
         run: |
           NEW_TITLE="$CURRENT_PR_TITLE, Fixes AB#$AB_ID"
