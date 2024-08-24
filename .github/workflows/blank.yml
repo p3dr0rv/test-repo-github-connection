@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [get_pr_title, get_ab_id]
     outputs:
-      newtitle: ${{ steps.new-title.outputs.title }}
+      newtitle: ${{ steps.new-title.outputs.prtitle }}
       update_required: ${{ steps.check.outputs.update_required }}
     steps:
       - name: Check if PR title contains fix keyword with AB# using grep
