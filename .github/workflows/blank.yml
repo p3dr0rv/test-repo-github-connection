@@ -42,3 +42,15 @@ jobs:
         run: |
           result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
           echo "id=${result}" >> "$GITHUB_OUTPUT"
+
+  # Get Pull request ID
+  get_pr_id:
+    runs-on: ubuntu-latest
+    needs: validation
+    outputs:
+      prid: ${{ steps.pr.outputs.id }}
+    steps:
+  # Extracts the pull request number and store the result using outputs 
+      - name: Extract pull request number
+        id: pr
+        run: echo "id=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
