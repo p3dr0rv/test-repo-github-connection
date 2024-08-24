@@ -1,13 +1,12 @@
 # This workflow detects if the AB validation check has succeeded
 # (It is considered a success when a comment is posted with the code lcc-200),
-# If a success message has been posted by the job (https://github.com/marketplace/actions/azure-boards-check-for-ab),
+# If a success message has been posted by the plugin (https://github.com/marketplace/actions/azure-boards-check-for-ab),
 # The workflow will extract the AB ID from the message
 # then it will update the PR title adding ',Fixed AB#ID' at the end.
 # Why?
 # Adding ',Fixed AB#ID' to the PR title will make the PR to automatically resolve the associated ADO item when the PR is completed.
-# For more details about the AB validation, see: 
 
-# if the message has been posted the action will ex
+
 name: "Append 'Fix AB#ID' to PR title"
 
 # Triggers the workflow when a new issue comment is created
@@ -29,4 +28,17 @@ jobs:
     steps:
       - name: Check if workflow needs to be triggered
         run: echo "Trigger workflow"
-
+        
+  # Get AB#ID
+  get_ab_id:
+    runs-on: ubuntu-latest
+    needs: validation
+    outputs:
+      abid: ${{ steps.step1.outputs.id }}
+    steps:
+  # Extracts the AB ID from the comment body using regex and store the result using outputs 
+      - name: Get AB ID from comment
+      - id: step1
+        run: |
+          result=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=#)\d+')
+          echo "id=${result}" >> "$GITHUB_OUTPUT"
