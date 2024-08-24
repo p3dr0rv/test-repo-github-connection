@@ -100,6 +100,7 @@ jobs:
       - name: Generate new PR title
         env:
           AB_ID: ${{ needs.get_ab_id.outputs.abid }}
+          CURRENT_PR_TITLE: ${{ needs.get_pr_title.outputs.prtitle }}
         if: steps.check.outputs.update_required == 'true'
         id: new-title
         run: |
