@@ -136,9 +136,9 @@ jobs:
       - name: Check status of job1
         id: check_status
         run: |
-          if [ "${{ needs.update_title.result }}" == "success" ] ||
-             [ "${{ needs.validation.result }}" == "skipped" ] ||
-             [ "${{ needs.update_title.result }}" == "skipped" &&  "${{ needs.check_if_title_needs_to_be_updated.result }}" == "success" ]; then
+          if [[ "${{ needs.update_title.result }}" == "success" ]] ||
+             [[ "${{ needs.validation.result }}" == "skipped" ]] ||
+             [[ "${{ needs.update_title.result }}" == "skipped" &&  "${{ needs.check_if_title_needs_to_be_updated.result }}" == "success" ]]; then
               echo "Job succeeded or was skipped."
           else
               echo "Job failed or was cancelled."
